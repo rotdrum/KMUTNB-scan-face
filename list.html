@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Record</title>
+
+    <!-- icon -->
+    <link rel="icon" href="icon.png">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="app.css">
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase.js"></script>
+	
+    <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-analytics.js"></script>
+
+    
+	<script>
+		// Your web app's Firebase configuration
+			const firebaseConfig = {
+                apiKey: "AIzaSyCMiXlac_-MWSJkCHCsRJ7r2A3-iWQ93QM",
+                authDomain: "face-recognition-494f1.firebaseapp.com",
+                databaseURL: "https://face-recognition-494f1.firebaseio.com",
+                projectId: "face-recognition-494f1",
+                storageBucket: "face-recognition-494f1.appspot.com",
+                messagingSenderId: "940775493551",
+                appId: "1:940775493551:web:ddc1810ac00b76536a695a",
+                measurementId: "G-JM0N9HDSV5"
+			};
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+		firebase.analytics();
+    </script>
+    
+    <script>
+
+
+        firebase.database().ref("/").on('value', function(snapshot){
+            snapshot.forEach(function(childSnapshot){
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+                var name = "" ;
+                var come  = 0 ;
+                var not_morning = 0;
+                var not_come = 0;
+                var score = 0;
+                var sum = 0 ;
+                var c = 0;
+                var nm = 0;
+                var nc = 0;
+                var z = 0 ;
+                if(childKey == "กิตติธัช กามูจันทรดี"){
+                    firebase.database().ref(childSnapshot.key).on('value', function(snapshot){
+                    snapshot.forEach(function(childSnapshot){
+                        var childKey = childSnapshot.key;
+                        var childData = childSnapshot.val();
+                        if(childSnapshot.key == "ชื่อ"){
+                            name +=  childSnapshot.val()   ;
+                            /*
+                            if(name == "กิตติธัช กามูจันทรดี"){
+                                if(childSnapshot.key == "มาเรียน"){
+                                    c +=   childSnapshot.val() ;
+                                }
+                                if(childSnapshot.key == "มาสาย"){
+                                    nm +=   childSnapshot.val() ;
+                                }
+                                if(childSnapshot.key == "ขาดเรียน"){
+                                    nc +=   childSnapshot.val() ;
+                                }
+                            }
+                            */
+                        }
+                        if(childSnapshot.key == "มาเรียน"){
+                            come +=   childSnapshot.val() ;
+                            c +=  childSnapshot.val() ;
+                        }
+                        if(childSnapshot.key == "มาสาย"){
+                            not_morning +=   childSnapshot.val() ;
+                            nm += childSnapshot.val() ;
+                        }
+                        if(childSnapshot.key == "ขาดเรียน"){
+                            not_come +=  childSnapshot.val() ;
+                            nc += childSnapshot.val() ;
+                        }
+                        if(childSnapshot.key == "คะแนน"){
+                            score +=  childSnapshot.val()  ;
+                        }
+                    })
+                        document.getElementById("test").innerHTML +=  "<td>" + "อาจารย์" + "</td>" + "<td>" + (come+not_come+not_morning) + "</td>" + "<td>" + 0 + "</td>" + "<td>" + 0 + "</td>" + "<td>" + (come+not_come+not_morning) + "</td>" + "<td>" + 10.00.toFixed(2) + "</td>";                    
+                        document.getElementById("test").innerHTML +=  "<td>" + name + "</td>" + "<td>" + come + "</td>" + "<td>" + not_morning + "</td>" + "<td>" + not_come + "</td>" + "<td>" + (come+not_come+not_morning) + "</td>" + "<td>" + score.toFixed(2) + "</td>";                    
+                    })
+                }
+                else if(childKey == "อาจารย์"){
+                   
+                }
+                else{
+                    firebase.database().ref(childSnapshot.key).on('value', function(snapshot){
+                    snapshot.forEach(function(childSnapshot){
+                        var childKey = childSnapshot.key;
+                        var childData = childSnapshot.val();
+                        if(childSnapshot.key == "ชื่อ"){
+                            name +=  childSnapshot.val()   ;
+                            /*
+                            if(name == "กิตติธัช กามูจันทรดี"){
+                                if(childSnapshot.key == "มาเรียน"){
+                                    c +=   childSnapshot.val() ;
+                                }
+                                if(childSnapshot.key == "มาสาย"){
+                                    nm +=   childSnapshot.val() ;
+                                }
+                                if(childSnapshot.key == "ขาดเรียน"){
+                                    nc +=   childSnapshot.val() ;
+                                }
+                            }
+                            */
+                        }
+                        if(childSnapshot.key == "มาเรียน"){
+                            come +=   childSnapshot.val() ;
+                        }
+                        if(childSnapshot.key == "มาสาย"){
+                            not_morning +=   childSnapshot.val() ;
+                        }
+                        if(childSnapshot.key == "ขาดเรียน"){
+                            not_come +=  childSnapshot.val() ;
+                        }
+                        if(childSnapshot.key == "คะแนน"){
+                            score +=  childSnapshot.val()  ;
+                        }
+                    })
+
+                        document.getElementById("test").innerHTML +=  "<td>" + name + "</td>" + "<td>" + come + "</td>" + "<td>" + not_morning + "</td>" + "<td>" + not_come + "</td>" + "<td>" + (come+not_come+not_morning) + "</td>" + "<td>" + score.toFixed(2) + "</td>";
+                    
+                    })
+                }
+        
+            })
+            document.getElementById("test").innerHTML +=  "</tr>" ;
+        })
+
+  
+        getData();
+    
+
+    function search() {
+        var a = 0 ;
+        var b = 0 ;
+        var c = 0 ;
+        
+        firebase.database().ref(document.getElementById("input_name").value+"/ชื่อ").once('value').then(function(snapshot){
+            document.getElementById('name').innerHTML = snapshot.val() ; 
+        });
+        firebase.database().ref(document.getElementById("input_name").value+"/มาเรียน").once('value').then(function(snapshot){
+            document.getElementById('come').innerHTML = snapshot.val(); 
+            a = snapshot.val(); 
+        });
+        firebase.database().ref(document.getElementById("input_name").value+"/มาสาย").once('value').then(function(snapshot){
+            document.getElementById('not_morning').innerHTML = snapshot.val(); 
+            b = snapshot.val(); 
+        });
+        firebase.database().ref(document.getElementById("input_name").value+"/ขาดเรียน").once('value').then(function(snapshot){
+            document.getElementById('not_come').innerHTML = snapshot.val(); 
+            c = snapshot.val(); 
+        });
+        firebase.database().ref(document.getElementById("input_name").value+"/คะแนน").once('value').then(function(snapshot){
+            document.getElementById('score').innerHTML = snapshot.val().toFixed(2) ; 
+            document.getElementById('sum').innerHTML = a + b + c; 
+        });
+        
+        document.getElementById("input_name").value = "" ;
+
+    }
+
+    </script>
+</head>
+<body>
+    <div id="a"></div>
+    <div id="aa"></div>
+
+   
+
+    <div class="container">
+        <h2>ระบบค้นหารายชื่อนักศึกษา</h2>
+
+        <div class="search-control">
+            <input type="search" class="search-form" placeholder="ค้นหารายชื่อ" id="input_name" > 
+            <button class="btn-search" id="search" onclick="search()" >ค้นหา</button>
+        </div>
+        
+
+        <table id="table_search" class="table-list">
+            <thead>
+                <tr>
+                    <th>ชื่อ-สกุล</th>
+                    <th>มาเรียน</th>
+                    <th>มาสาย</th>
+                    <th>ขาดเรียน</th>
+                    <th>รวมวัน</th>
+                    <th>คะแนน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="name"></td>
+                    <td id="come"></td>
+                    <td id="not_morning"></td>
+                    <td id="not_come"></td>
+                    <td id="sum"></td>
+                    <td id="score"></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <table id="test" class="table-list">
+            <thead>
+                <tr>
+                    <th>ชื่อ-สกุล</th>
+                    <th>มาเรียน</th>
+                    <th>มาสาย</th>
+                    <th>ขาดเรียน</th>
+                    <th>รวมวัน</th>
+                    <th>คะแนน</th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+            
+
+
+    <script>
+        $("#table_search").hide ();
+
+        $("#search").click(function(){
+            $("#table_search").show();
+        });
+
+
+    </script>
+</body>
+</html>

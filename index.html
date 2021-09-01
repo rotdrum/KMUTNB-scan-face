@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Record</title>
+
+    <!-- icon -->
+    <link rel="icon" href="icon.png">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="app.css">
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+
+    	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase.js"></script>
+	
+    <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-analytics.js"></script>
+
+
+    <script>
+		// Your web app's Firebase configuration
+			const firebaseConfig = {
+                apiKey: "AIzaSyCMiXlac_-MWSJkCHCsRJ7r2A3-iWQ93QM",
+                authDomain: "face-recognition-494f1.firebaseapp.com",
+                databaseURL: "https://face-recognition-494f1.firebaseio.com",
+                projectId: "face-recognition-494f1",
+                storageBucket: "face-recognition-494f1.appspot.com",
+                messagingSenderId: "940775493551",
+                appId: "1:940775493551:web:ddc1810ac00b76536a695a",
+                measurementId: "G-JM0N9HDSV5"
+			};
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+		firebase.analytics();
+    </script>
+    
+    <script>
+ var myVar = setInterval(myTimer, 1000);
+
+function myTimer() {
+
+        firebase.database().ref("/").on('value', function(snapshot){
+            snapshot.forEach(function(childSnapshot){
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+                var name = "" ;
+                var come  = 0 ;
+                var not_morning = 0;
+                var not_come = 0;
+                var score = 0;
+                var flag = 0;
+                var sum = 0 ;
+                var a = 0 ;
+                var b = 0 ;
+                var c = 0 ;
+                var str = "" ;
+
+                firebase.database().ref(childSnapshot.key).on('value', function(snapshot){
+
+                snapshot.forEach(function(childSnapshot){
+                    var childKey = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    if(childSnapshot.key == "ชื่อ"){
+                        name +=  childSnapshot.val()   ;
+                    }
+                    if(childSnapshot.key == "มาเรียน"){
+                        come +=   childSnapshot.val() ;
+                        a += childSnapshot.val(); 
+                    }
+                    if(childSnapshot.key == "มาสาย"){
+                        not_morning +=   childSnapshot.val() ;
+                        b += childSnapshot.val(); 
+                    }
+                    if(childSnapshot.key == "ขาดเรียน"){
+                        not_come +=  childSnapshot.val() ;
+                        c += childSnapshot.val(); 
+                    }
+                    if(childSnapshot.key == "คะแนน"){
+                        score +=  childSnapshot.val()  ;
+                    }
+                    if(childSnapshot.key == "flag"){
+                        flag +=  childSnapshot.val()  ;
+                        if(childSnapshot.val() == 2){
+                            str = " มาเรียน" ;
+                        }
+                        if(childSnapshot.val() == 3){
+                            str = " มาสาย" ;
+                        }
+                        if(childSnapshot.val() == 4){
+                            str = " ขาดเรียน" ;
+                        }
+                    }
+                    
+
+                })
+
+                 
+
+                    /*
+                    if (flag == 2){
+                        document.getElementById("name").innerHTML =  childKey + str ;
+                        document.getElementById("come").innerHTML =  come ;
+                        document.getElementById("not_come").innerHTML =  not_come ;
+                        document.getElementById("not_morning").innerHTML =  not_morning ;
+                        document.getElementById("more").innerHTML =   a + b + c  ;
+                        document.getElementById("score").innerHTML =  score.toFixed(2) ;
+                        firebase.database().ref("/"+childKey+"/flag").set(1) ;
+                    }     
+                    if (flag == 3){
+                        document.getElementById("name").innerHTML =  childKey + str ;
+                        document.getElementById("come").innerHTML =  come ;
+                        document.getElementById("not_come").innerHTML =  not_come ;
+                        document.getElementById("not_morning").innerHTML =  not_morning ;
+                        document.getElementById("more").innerHTML =   a + b + c  ;
+                        document.getElementById("score").innerHTML =  score.toFixed(2) ;
+                        firebase.database().ref("/"+childKey+"/flag").set(1) ;
+                    }   
+                    if (flag == 4){
+                        firebase.database().ref("/"+childKey+"/flag").set(1) ;
+                    }        
+                    */     
+    
+                })
+                if(flag == 1){
+
+                }
+                else{
+                    document.getElementById("name").innerHTML =  childKey + str ;
+                    document.getElementById("come").innerHTML =  come ;
+                    document.getElementById("not_come").innerHTML =  not_come ;
+                    document.getElementById("not_morning").innerHTML =  not_morning ;
+                    document.getElementById("more").innerHTML =   a + b + c  ;
+                    document.getElementById("score").innerHTML =  score.toFixed(2) ;
+                    firebase.database().ref("/"+childKey+"/flag").set(1) ;
+                }
+            })
+            
+        })
+
+  
+        getData();
+}
+
+    </script>
+</head>
+<body>
+    <div class="detail">
+        <a class="detail-setting" href="list.html">
+            <i class="fas fa-sliders-h"></i>
+        </a>
+
+      
+
+        <div class="detail-information">
+            <div class="form-group">
+                <h1 id="name">สแกนหน้า</h1>
+            </div>
+
+            <div class="form-grid">
+
+                <!-- items 1 -->
+                <div class="grid-items green-card">
+                    <p>มาเรียน</p>
+                    <h1 id="come">0</h1>
+                </div>
+
+                <!-- items 2 -->
+                <div class="grid-items yellow-card">
+                    <p>มาสาย</p>
+                    <h1 id="not_morning">0</h1>
+                </div>
+
+                <!-- items 3 -->
+                <div class="grid-items red-card">
+                    <p>ไม่มาเรียน</p>
+                    <h1 id="not_come">0</h1>
+                </div>
+
+                <!-- items 4 -->
+                <div class="grid-items blue-card">
+                    <p>รวมวัน</p>
+                    <h1 id="more">0</h1>
+                </div>
+
+                <!-- items 5 -->
+                <div class="grid-items purple-card">
+                    <p >คะแนนรวม</p>
+                    <h1 id="score">0</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
